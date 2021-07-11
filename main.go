@@ -338,14 +338,18 @@ func clarifyAtmoPressure(data []string) {
 }
 
 func decodeVisibility(code string) string {
-	tmp := strings.Split(code, "//")
-	return tmp[1]
+	var tmp []string
+	if strings.Contains(code, "//") {
+		tmp = strings.Split(code, "//")
+		return tmp[1]
+	}
+	return "None"
 }
 
 func clarifyVisibility(data []string) {
 	var trigger bool = false
 	var visibility string
-	if metar_size <= 10 {
+	if metar_size == 10 {
 		visibility = decodeVisibility(data[6])
 	}
 	if metar_size == 11 {
@@ -362,7 +366,7 @@ func clarifyVisibility(data []string) {
 		trigger = true
 	}
 	if trigger == false {
-		metar_slice = append(metar_slice, "None")
+		metar_slice = append(metar_slice, visibility)
 	}
 }
 
